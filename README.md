@@ -1,5 +1,5 @@
-# Data Visualisation Final Project
-Say Cheese! 🧀
+# Data Visualisation Final Project: Say Cheese! 🧀
+
 ## Topic
 Our project focuses on analysing the unique qualities and production patterns of cheeses from various regions. Cheese is a beloved food worldwide (and for good reason!), and its characteristics can vary widely depending on where it is made, the type of milk used, and how it is produced. Through this project, we aim to dive into the details of cheese data to reveal regional trends, production preferences, and other key factors that shape each cheese’s distinctive qualities.
 ## Dataset
