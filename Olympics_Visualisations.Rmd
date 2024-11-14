@@ -49,3 +49,39 @@ na_counts <- colSums(is.na(gdp_pop_co2_energy))
 na_counts
 View(gdp_pop_co2_energy)
 ```
+
+
+```{r}
+olympics <- read_csv(here::here("data/olympics.csv")) |> 
+  janitor::clean_names() 
+```
+
+```{r}
+olympics_world_data <- left_join(olympics, gdp_pop_co2_energy, by = c("team" = "country", "year"))
+olympics_world_data
+
+```
+
+
+```{r}
+median_values <- olympics_world_data %>%
+  filter(!is.na(age), year >= 1990) %>%
+  group_by(team, sport) %>%
+  summarise(
+    median_height = median(height, na.rm = TRUE),
+    median_weight = median(weight, na.rm = TRUE)
+  ) %>% 
+  ungroup()
+
+olympics_world_data <- olympics_world_data %>%
+  filter(!is.na(age), year >= 1990) %>%
+  mutate(medal = replace_na(medal, "None")) %>%
+  left_join(median_values, by = c("team", "sport")) %>%
+  mutate(
+    height = if_else(is.na(height), median_height, height),
+    weight = if_else(is.na(weight), median_weight, weight)
+  ) %>%
+  select(-median_height, -median_weight)
+
+```
+
