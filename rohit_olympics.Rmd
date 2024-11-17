@@ -1,0 +1,235 @@
+---
+title: "Olympics"
+author: "Group 6"
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: true
+    toc: yes
+    toc_float: yes
+---
+
+```{r, setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+```{r}
+library(tidyverse)
+library(showtext)
+library(ggtext)
+library(viridis)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(sf)
+```
+
+
+```{r}
+# load fonts we will use
+font_add_google("Montserrat", "Montserrat") 
+font_add_google("Lato", "Lato")
+
+## Automatically use showtext to render text for future devices
+showtext_auto()
+
+gdp_pop_co2_energy <- read_csv(here::here("data/gdp_pop_co2_energy.csv")) |> 
+  janitor::clean_names() 
+
+na_counts <- colSums(is.na(gdp_pop_co2_energy))
+na_counts
+View(gdp_pop_co2_energy)
+```
+
+
+```{r}
+olympics <- read_csv(here::here("data/olympics.csv")) |> 
+  janitor::clean_names() 
+```
+
+```{r}
+olympics_world_data <- left_join(olympics, gdp_pop_co2_energy, by = c("team" = "country", "year"))
+olympics_world_data
+
+```
+
+
+```{r}
+median_values <- olympics_world_data %>%
+  filter(!is.na(age), year >= 1990) %>%
+  group_by(team, sport) %>%
+  summarise(
+    median_height = median(height, na.rm = TRUE),
+    median_weight = median(weight, na.rm = TRUE)
+  ) %>% 
+  ungroup()
+
+olympics_world_data <- olympics_world_data %>%
+  filter(!is.na(age), year >= 1990) %>%
+  mutate(medal = replace_na(medal, "None")) %>%
+  left_join(median_values, by = c("team", "sport")) %>%
+  mutate(
+    height = if_else(is.na(height), median_height, height),
+    weight = if_else(is.na(weight), median_weight, weight)
+  ) %>%
+  select(-median_height, -median_weight)
+
+```
+
+
+
+
+
+```{r}
+country_year_season_summary <- olympics_world_data %>%
+  group_by(team, year, season) %>%
+  summarise(
+    gdp_per_capita = first(gd_ppercap),  # Assuming GDP is constant for the country and year
+    population = first(population),         # Assuming population is constant for the country and year
+    athletes = n()                          # Count occurrences of a country 
+  ) %>%
+  mutate(
+    athletes_per_capita = athletes / population,
+    gdp_per_athlete = gdp_per_capita / athletes_per_capita
+  )
+world <- ne_countries(scale = "medium", returnclass = "sf")
+```
+
+```{r}
+world_data <- world %>%
+  left_join(country_year_season_summary, by = c("name" = "team"))
+
+world_data_2016 <- world_data %>% 
+  filter(year == 2016)
+
+world_data_2014 <- world_data %>% 
+  filter(year == 2014)
+```
+
+```{r}
+world_data_2016 %>% 
+  ggplot()+
+  geom_sf(aes(fill = gdp_per_athlete), color = "white") +
+  scale_fill_viridis_c(option = "F", name = "GDP per Capita:Athletes sent per Capita", na.value = "grey50", alpha = 1, begin = 0, end = 1, direction = -1) +
+  theme_minimal() +
+  labs(
+    title = "World Map of GDP per Athlete",
+    subtitle = "Ratio of GDP and Athletes sent per Capita (Summer 2016)")+
+   theme(
+    plot.title = element_text(hjust = 0, size = 14, face = "bold"),
+    legend.position = "right",
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+
+```{r}
+
+# south_america_countries <- c(
+#   "Argentina", "Bolivia", "Brazil", "Chile", "Colombia", 
+#   "Ecuador", "Guyana", "Paraguay", "Peru", "Suriname", 
+#   "Uruguay", "Venezuela"
+# )
+
+south_america_energy <- gdp_pop_co2_energy %>%
+  filter(
+    country == "Brazil",
+    year >= 2010 & year <= 2020
+  )
+ggplot(south_america_energy, aes(x = year, y = energy_per_gdp, color = country, group = country)) +
+  geom_line(size = 1) +
+  geom_vline(xintercept = 2016, linetype = "dashed", color = "red", size = 0.8) +
+  annotate(
+    "text", x = 2016, y = max(south_america_energy$energy_consumption, na.rm = TRUE),
+    label = "2016 Olympics", color = "red", hjust = -0.1
+  ) +
+  scale_color_viridis_d(option = "plasma", name = "Country") +
+  theme_minimal() +
+  labs(
+    title = "Energy per GDP Trend in Brazil",
+    subtitle = "Highlighting Brazil's hosting of the 2016 Olympics",
+    x = "Year",
+    y = "Energy Consumption (MWh)"
+  )
+
+south_america_energy <- gdp_pop_co2_energy %>%
+  filter(
+    country == "Brazil",
+    year >= 2010 & year <= 2020
+  )
+ggplot(south_america_energy, aes(x = year, y = energy_per_capita, color = country, group = country)) +
+  geom_line(size = 1) +
+  geom_vline(xintercept = 2016, linetype = "dashed", color = "red", size = 0.8) +
+  annotate(
+    "text", x = 2016, y = max(south_america_energy$energy_consumption, na.rm = TRUE),
+    label = "2016 Olympics", color = "red", hjust = -0.1
+  ) +
+  scale_color_viridis_d(option = "plasma", name = "Country") +
+  theme_minimal() +
+  labs(
+    title = "Energy per capita Trend in Brazil",
+    subtitle = "Highlighting Brazil's hosting of the 2016 Olympics",
+    x = "Year",
+    y = "Energy Consumption (MWh)"
+  )
+
+```
+```{r}
+# ALL OLYMPICS COUNTRIES
+olympics_host_countries <- c(
+  "France", "Spain", "Norway", "United States", "Japan", "Australia", 
+  "Greece", "Italy", "China", "Canada", "United Kingdom", "Russia", 
+  "Brazil", "South Korea"
+)
+
+olympics_countries_data <- gdp_pop_co2_energy %>% 
+  filter(country %in% olympics_host_countries,
+         year >= 1990)
+```
+
+```{r}
+south_america_energy <- gdp_pop_co2_energy %>%
+  filter(
+    country == "France",
+    year >= 1990
+  )
+ggplot(south_america_energy, aes(x = year, y = energy_per_capita, color = country, group = country)) +
+  geom_line(size = 1) +
+  geom_vline(xintercept = 2016, linetype = "dashed", color = "red", size = 0.8) +
+  annotate(
+    "text", x = 2016, y = max(south_america_energy$energy_consumption, na.rm = TRUE),
+    label = "2016 Olympics", color = "red", hjust = -0.1
+  ) +
+  scale_color_viridis_d(option = "plasma", name = "Country") +
+  theme_minimal() +
+  labs(
+    title = "Energy per capita Trend in Brazil",
+    subtitle = "Highlighting Brazil's hosting of the 2016 Olympics",
+    x = "Year",
+    y = "Energy Consumption (MWh)"
+  )
+```
+
+
+
+
+
+
+
+
+
