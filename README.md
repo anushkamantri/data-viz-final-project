@@ -1,10 +1,12 @@
 # Data Visualisation Final Project:  Olympics
 
 ## Topic
-Our project centers on analyzing global patterns in Olympic success, with a focus on the relationships between athlete demographics, country characteristics, and medal outcomes. The Olympics are a stage where athletic excellence intersects with cultural, economic, and regional dynamics, making it an ideal context for uncovering unique insights through data visualization. By leveraging both athlete and country-level data, we aim to identify key trends and factors that shape Olympic performance.
+Our project centers on analyzing global patterns in Olympic success, with a focus on examining how the Olympics impact the economic state of host nations (GDP and energy consumption), depending on whether the country is developed or developing. The Olympics represent a unique intersection of athletic excellence, cultural significance, and economic impact. Hosting the Olympics often involves substantial investments in infrastructure and resources, creating opportunities for economic growth but also posing potential challenges for nations with varying levels of development.
+By leveraging both athlete and country-level data, this project seeks to uncover meaningful insights into the relationship between hosting the Olympics, economic performance, and energy consumption, while also identifying trends in athletic participation and success across countries. This analysis will provide a deeper understanding of the global implications of the Olympic Games and offer data-driven perspectives on their socioeconomic effects.
 
 ## Dataset
-The [dataset](https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-06-04/readme.md) we’re using for this project includes a broad array of information about cheeses, covering details such as name, region of origin, production methods, milk types, fat content, and other defining characteristics, taken from cheese.com. This comprehensive collection of data allows us to examine both qualitative aspects (like milk type and physical attributes) and quantitative factors (such as fat percentage and age) across different cheeses. Each entry in the dataset represents a unique cheese, providing specific insights that let us compare attributes across various cheese types and regions.
+The dataset integrates individual athlete data with country-level attributes, enabling a comprehensive analysis that combines personal and national dimensions of Olympic performance. The Olympics dataset captures athlete demographics, participation, and performance, while the GDP and energy dataset provides macroeconomic indicators and energy usage data for host nations.
+
 
 | variable | class | description |
 | --- | --- | --- |
@@ -49,25 +51,29 @@ From the GDP, Population, and Energy Dataset
 
 
 ## Graphical and Statistical Techniques
-To effectively portray our findings, we will use several graph types to make sure that we find the most suitable representation for each one.
+To effectively communicate our findings, we will utilize a range of graphical and statistical methods, carefully tailored to answer our research questions. These methods will ensure clarity and provide actionable insights.
 
-To illustrate regional trends and cheese distribution patterns we aim to use (geographical) heatmaps. For example, we can visualise the correlation between textures with flavours to identify common pairings.
-
-We will also use scatter plots for visualising relationships between different features, and to display the distribution of attributes like fat content across different cheese types or regions box plots and histograms will be the most suitable. 
-
-Another graph we plan on creating a stacked bar chart in order to show the distribution of milk types (cow, goat, sheep, etc.) used in cheeses across different countries or regions. From this, we could examine how the type of milk used reflects regional livestock and traditions.
-
-We also plan to utilise the various statistical methods we have learned in class to create and present visualisations and tell a meaningful story about cheeses:
-
+Graphical Techniques
 **Descriptive Statistics:**
-To understand the dataset and identify key figures, patterns, or outliers.
+Mosaic Plots: Display the number of athletes sent by country and highlight participation trends based on country development status (developed vs. developing).
+Scatter Plots: Analyze the distribution of sports participation and medal outcomes by country development status and energy consumption patterns.
+Stacked Bar Charts: Show medal proportions (gold, silver, bronze) for countries categorized by GDP and population size.
+Time Series Analysis:
+Line Charts: Illustrate trends in the number of athletes sent over time and how hosting the Olympics impacts participation levels.
+Dual-Axis Plots: Compare GDP and energy consumption trends for host nations before, during, and after hosting the Olympics.
+Geographical Heatmaps:
+Map the geographical distribution of athletes, medal counts, and energy consumption across host nations.
+
+Statistical Techniques
+Descriptive Statistics: Summarize key variables such as GDP growth, energy usage, and medal counts, segmented by country type (developed vs. developing).
 
 **Correlation Analysis:**
-By analysing correlations between variables such as fat content, milk type, and region, we hope to uncover significant relationships.
+Investigate relationships between variables like GDP growth, energy consumption, and medal performance to identify significant patterns.
 
 **Regression Analysis:** 
-We may use regression models to identify influential predictors to predict characteristics like flavour intensity or texture based on quantitative variables (such as fat content, milk type).
-
+Use regression models to quantify the impact of hosting the Olympics on GDP and energy consumption.
+Analyze how development status moderates the effects of hosting.
+Comparative Analysis: Perform comparisons between host and non-host countries to evaluate differences in economic and energy impacts.
 
 
 
