@@ -1,13 +1,57 @@
-# Data Visualisation Final Project: Say Cheese! 🧀
+# Data Visualisation Final Project:  Olympics
 
 ## Topic
-Our project focuses on analysing the unique qualities and production patterns of cheeses from various regions. Cheese is a beloved food worldwide (and for good reason!), and its characteristics can vary widely depending on where it is made, the type of milk used, and how it is produced. Through this project, we aim to dive into the details of cheese data to reveal regional trends, production preferences, and other key factors that shape each cheese’s distinctive qualities.
+Our project centers on analyzing global patterns in Olympic success, with a focus on the relationships between athlete demographics, country characteristics, and medal outcomes. The Olympics are a stage where athletic excellence intersects with cultural, economic, and regional dynamics, making it an ideal context for uncovering unique insights through data visualization. By leveraging both athlete and country-level data, we aim to identify key trends and factors that shape Olympic performance.
+
 ## Dataset
 The [dataset](https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-06-04/readme.md) we’re using for this project includes a broad array of information about cheeses, covering details such as name, region of origin, production methods, milk types, fat content, and other defining characteristics, taken from cheese.com. This comprehensive collection of data allows us to examine both qualitative aspects (like milk type and physical attributes) and quantitative factors (such as fat percentage and age) across different cheeses. Each entry in the dataset represents a unique cheese, providing specific insights that let us compare attributes across various cheese types and regions.
 
 | variable | class | description |
 | --- | --- | --- |
-| cheese | character | Name of the cheese. |
+
+From the Olympics Dataset
+| id | Integer	| Unique identifier for each athlete.
+| name |	Character	| Name of the athlete.
+| sex |	Character	| Gender of the athlete (M/F).
+| age |	Numeric	| Age of the athlete.
+| height |	Numeric |	Height of the athlete (in cm).
+| weight |	Numeric |	Weight of the athlete (in kg).
+| team |	Character	| The country or team represented by the athlete.
+| noc |	Character	| National Olympic Committee (three-letter country code).
+| games |	Character |	Edition of the Olympics (e.g., "2000 Summer").
+| year |	Integer	| Year of the Olympics.
+| season|	Character	| Season of the Olympics ("Summer" or "Winter").
+| city |	Character	| Host city of the Olympics.
+| sport |	Character	| Sport category participated in by the athlete.
+| event |	Character	| Specific event participated in by the athlete.
+| medal |	Character	|Medal won (Gold, Silver, Bronze, or None)
+
+
+From the GDP, Population, and Energy Dataset
+Variable	Class	Description
+country	Character	Name of the country.
+iso3c / iso_code	Character	ISO-3 country code.
+year	Integer	Year of the data.
+population	Numeric	Total population of the country.
+gdp	Numeric	Gross Domestic Product (GDP) in current USD.
+GDPpercap	Numeric	GDP per capita.
+biofuel, coal, gas, hydro, nuclear, oil, solar, wind	Numeric	Energy sources in use and their contribution to total energy production.
+electricity_generation	Numeric	Total electricity generated (in GWh).
+electricity_demand	Numeric	Total electricity consumption (in GWh).
+electricity_share_energy	Numeric	Share of electricity in total energy usage.
+energy_per_capita	Numeric	Energy consumption per capita (in GWh).
+energy_per_gdp	Numeric	Energy intensity (energy usage per GDP unit).
+co2	Numeric	Total carbon dioxide emissions (in metric tons).
+co2_per_capita	Numeric	Carbon dioxide emissions per capita (in metric tons).
+co2_per_gdp	Numeric	Carbon dioxide emissions per GDP (in metric tons per USD).
+total_ghg	Numeric	Total greenhouse gas emissions (in metric tons).
+total_ghg_excluding_lucf	Numeric	Total greenhouse gas emissions excluding land-use changes.
+continent	Character	Continent where the country is located.
+
+
+
+| id | number | Unique identifier for each athlete |
+| name | character | Name of the Athelate. |
 | url | character | Location of the cheese's description at cheese.com |
 | milk | character | The type of milk used for the cheese, when known. |
 | country | character | The country or countries origin of the cheese. |
